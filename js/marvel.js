@@ -31,7 +31,7 @@ function renderMarvelCharacters(characters) {
 
     if (
       character.thumbnail.path ===
-      `https://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available`
+      `http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available`
     ) {
       return character;
     }
