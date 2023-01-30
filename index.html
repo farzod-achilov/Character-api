@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+  </head>
+  <body class="marvel-body">
+    <a href="./disney.html">disney</a>
+    <a href="./dota2.html">Dota 2</a>
+    <div class="logo-wrapper">
+      <img class="logo" src="./img/marvel-logo.png" alt="logo" />
+    </div>
+    <form class="form-search" data-marvel-form>
+      <input
+        class="input-seach"
+        placeholder="search characters"
+        name="name"
+        type="text"
+      />
+      <button class="seach-btn" type="submit">Search</button>
+    </form>
+    <div class="marvel-container" data-marval-characters></div>
+
+    <nav
+      aria-label="Marvel pagination"
+      class="d-flex justify-content-center my-3"
+    >
+      <ul data-marvel-pagination class="pagination"></ul>
+    </nav>
+
+    <div data-marvel-modal class="marvel-modal my-modal" id="marvel-modal">
+      <img src="./img/spinner.svg" data-spiner class="d-none" alt="spinner" />
+      <div
+        data-marvel-modal-content
+        class="marvel-modal-content my-modal-content"
+      ></div>
+    </div>
+
+    <script src="./js/marvel.js"></script>
+  </body>
+</html>
