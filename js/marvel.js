@@ -31,7 +31,7 @@ function renderMarvelCharacters(characters) {
 
     if (
       character.thumbnail.path ===
-      `http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available`
+      `https://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available`
     ) {
       return character;
     }
@@ -200,7 +200,7 @@ function fillMarvelModal(character, elModalSpiner) {
 
 async function getComicsById(characterId) {
   let res = await fetch(
-    `http://gateway.marvel.com/v1/public/characters/${characterId}/comics?apikey=${apikey}&ts=${ts}&hash=${hash}`
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/comics?apikey=${apikey}&ts=${ts}&hash=${hash}`
   );
   let data = await res.json();
   fillModalComics(data.data.results);
@@ -229,7 +229,7 @@ function onTextClick(evt) {
 
 async function getSerialById(characterId) {
   let res = await fetch(
-    `http://gateway.marvel.com/v1/public/characters/${characterId}/series?apikey=${apikey}&ts=${ts}&hash=${hash}`
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/series?apikey=${apikey}&ts=${ts}&hash=${hash}`
   );
   let data = await res.json();
   fillModalSerial(data.data.results);
@@ -249,7 +249,7 @@ function fillModalSerial(serials) {
 
 async function getEventsById(characterId) {
   let res = await fetch(
-    `http://gateway.marvel.com/v1/public/characters/${characterId}/events?apikey=${apikey}&ts=${ts}&hash=${hash}`
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/events?apikey=${apikey}&ts=${ts}&hash=${hash}`
   );
   let data = await res.json();
   fillModalEvents(data.data.results);
@@ -269,7 +269,7 @@ function fillModalEvents(eventses) {
 
 async function getStoriesById(characterId) {
   let res = await fetch(
-    `http://gateway.marvel.com/v1/public/characters/${characterId}/stories?apikey=${apikey}&ts=${ts}&hash=${hash}`
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/stories?apikey=${apikey}&ts=${ts}&hash=${hash}`
   );
   let data = await res.json();
   fillModalStories(data.data.results);
