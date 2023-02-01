@@ -7,9 +7,8 @@ getDotaCharacters();
 
 async function getDotaCharacters() {
   const dotaCharacters = await fetch(`${urlDota}`);
-  const dotaData = dotaCharacters.json();
+  const dotaData = await dotaCharacters.json();
   console.log(dotaData);
-
   renderDotaCharacters(dotaData);
 }
 
@@ -18,7 +17,10 @@ function renderDotaCharacters(characters) {
   let html = "";
   characters.forEach((character) => {
     html += `
-      <div>${character.id}</div>
+<div>
+  <img src="https://api.opendota.com${character.img}" alt="${character.localized_name}">
+  <h2>${character.localized_name}</h2>
+</div>
       `;
   });
 

@@ -210,3 +210,15 @@ button {
 .show-modal .more-icon {
   transform: rotateY(180deg);
 }
+
+.dota-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.dota-container img {
+  width: 256px;
+  height: 144px;
+}
