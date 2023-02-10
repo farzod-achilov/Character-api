@@ -1,18 +1,11 @@
 // PRIVATEKEY = `aaa48316379abee3e253d565d626c799a8958a41`
 // PUBLICKEY = `2916c9e0417f61774e61f7a9ba72d384`
-
-const apikey = "2916c9e0417f61774e61f7a9ba72d384";
-const ts = "25/01/2023, 05:58:15";
-const hash = "4c1b759a2e5f993858c77f6c20f934b6";
-const url = `https://gateway.marvel.com:443/v1/public/characters?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`;
-
 const elListMarvel = document.querySelector("[data-marval-characters]");
 const elForm = document.querySelector("[data-marvel-form]");
 const elPagination = document.querySelector("[data-marvel-pagination]");
 const elMarvelModalContent = document.querySelector(
   "[data-marvel-modal-content]"
 );
-
 getMarvelCharacters();
 
 async function getMarvelCharacters(page = 0) {
@@ -28,7 +21,6 @@ function renderMarvelCharacters(characters) {
   characters.forEach((character) => {
     const marvelImg = ` ${character.thumbnail.path}.${character.thumbnail.extension}`;
     const marvelName = `${character.name}`;
-
     if (
       character.thumbnail.path ===
       `http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available`
@@ -108,10 +100,10 @@ async function onMarvelModalOpen(evt) {
   let characterId = el.dataset.characterId;
 
   await getCharacter(characterId);
-  await getComicsById(characterId);
-  await getSerialById(characterId);
-  await getEventsById(characterId);
-  await getStoriesById(characterId);
+  // await getComicsById(characterId);
+  // await getSerialById(characterId);
+  // await getEventsById(characterId);
+  // await getStoriesById(characterId);
 
   let modalSelector = el.dataset.marvelModalOpen;
   document.querySelector(modalSelector).classList.add("show");
@@ -170,119 +162,11 @@ function fillMarvelModal(character, elModalSpiner) {
   <div class="marvel__modal-content">
     <h2 class="marvel__modal-name"><b> ${characterName}</h2>
     <p class="marvel__modal-description"><b>Description:</b> ${characterDescription}</p>
+    <a href="/marvel-character.html?marvelId=${infCharacter.id}">Show More</a>
     <div>
-    <div class="comics-name"><p data-text="#content">Comics</p>
-    <img class="more-icon"  width="25px"; height="25px"; src="./img/more.svg" alt="more" /></div>
-    <div id="content" class="marvel-modal-comics" data-modal-comics>Comics </div>
-    </div>
-    <div>
-    <div class="comics-name"><p data-text="#serial">Serial</p>
-    <img class="more-icon"  width="25px"; height="25px"; src="./img/more.svg" alt="more" /></div>
-    <div id="serial" class="marvel-modal-comics" data-modal-serial></div>
-    </div>
-    <div>
-    <div class="comics-name"><p data-text="#events">Events</p>
-    <img class="more-icon"  width="25px"; height="25px"; src="./img/more.svg" alt="more" /></div>
-    <div id="events" class="marvel-modal-comics" data-modal-events></div>
-    </div>
-    <div class="comics-name"><p data-text="#stories">Stories</p>
-    <img class="more-icon"  width="25px"; height="25px"; src="./img/more.svg" alt="more" /></div>
-    <div id="stories" class="marvel-modal-comics" data-modal-stories></div>
-    </div>
-  </div>
-</div>
     `;
   });
 
   elMarvelModalContent.innerHTML = html;
   elModalSpiner.classList.add("d-none");
-}
-
-async function getComicsById(characterId) {
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/comics?apikey=${apikey}&ts=${ts}&hash=${hash}`
-  );
-  let data = await res.json();
-  fillModalComics(data.data.results);
-}
-
-function fillModalComics(comicses) {
-  ModalComics = document.querySelector("[data-modal-comics]");
-  let html = "";
-  comicses.forEach((comics) => {
-    html += `
-    
-    <li>${comics.title}</li>  
-    `;
-    ModalComics.innerHTML = html;
-  });
-}
-
-function onTextClick(evt) {
-  const el = evt.target.closest("[data-text]");
-
-  if (!el) return;
-
-  let modalSelector = el.dataset.text;
-  document.querySelector(modalSelector).classList.toggle("show-modal");
-}
-
-async function getSerialById(characterId) {
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/series?apikey=${apikey}&ts=${ts}&hash=${hash}`
-  );
-  let data = await res.json();
-  fillModalSerial(data.data.results);
-}
-
-function fillModalSerial(serials) {
-  ModalSerial = document.querySelector("[data-modal-serial]");
-  let html = "";
-  serials.forEach((serial) => {
-    html += `
-    
-    <li>${serial.title}</li>  
-    `;
-    ModalSerial.innerHTML = html;
-  });
-}
-
-async function getEventsById(characterId) {
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/events?apikey=${apikey}&ts=${ts}&hash=${hash}`
-  );
-  let data = await res.json();
-  fillModalEvents(data.data.results);
-}
-
-function fillModalEvents(eventses) {
-  ModalEvents = document.querySelector("[data-modal-events]");
-  let html = "";
-  eventses.forEach((events) => {
-    html += `
-    
-    <li>${events.title}</li>  
-    `;
-    ModalEvents.innerHTML = html;
-  });
-}
-
-async function getStoriesById(characterId) {
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/stories?apikey=${apikey}&ts=${ts}&hash=${hash}`
-  );
-  let data = await res.json();
-  fillModalStories(data.data.results);
-}
-
-function fillModalStories(storieses) {
-  ModalStories = document.querySelector("[data-modal-stories]");
-  let html = "";
-  storieses.forEach((stories) => {
-    html += `
-    
-    <li>${stories.title}</li>  
-    `;
-    ModalStories.innerHTML = html;
-  });
 }
