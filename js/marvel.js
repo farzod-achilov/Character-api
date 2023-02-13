@@ -8,11 +8,11 @@ const elMarvelModalContent = document.querySelector(
 );
 getMarvelCharacters();
 
-async function getMarvelCharacters(page = 0) {
-  const marvelCharacters = await fetch(`${url}&offset=${page * 100}`);
+async function getMarvelCharacters(page = 1) {
+  const marvelCharacters = await fetch(`${url}&offset=${page * 75 - 75}`);
   const marvelData = await marvelCharacters.json();
   renderMarvelCharacters(marvelData.data.results);
-  renderPagination(Math.ceil(+marvelData.data.total / 100));
+  renderPagination(Math.ceil(+marvelData.data.total / 75));
 }
 
 function renderMarvelCharacters(characters) {
@@ -28,12 +28,12 @@ function renderMarvelCharacters(characters) {
       return character;
     }
     html += `
-    <button data-marvel-modal-open="#marvel-modal" data-character-id="${character.id}">
-    <div class="marvel">
-      <div class="marvel-img">
+    <button class="marvel__card-btn" data-marvel-modal-open="#marvel-modal" data-character-id="${character.id}">
+    <div class="marvel__card">
+      <div class="marvel__card-img">
         <img src="${marvelImg}" alt="${marvelName}" />
       </div>
-      <div class="marvel-content">
+      <div class="marvel__card-content">
         <h2 class="marvel-name">${marvelName}</h2>
       </div>
     </div>
@@ -66,7 +66,7 @@ function renderPagination(totalPages) {
   elPagination.innerHTML = "";
   let html = "";
 
-  for (let i = 0; i <= totalPages; i++) {
+  for (let i = 1; i <= totalPages; i++) {
     html += `
     <li class="page-item"><a class="page-link" data-marvel-page="${i}" href="?page=${i}">${i}</a></li>
     `;
@@ -80,7 +80,6 @@ document.addEventListener("click", (evt) => {
   onMarvelModalOpen(evt);
   onMarvelModalClose(evt);
   onCloseOutsideClick(evt);
-  onTextClick(evt);
 });
 
 function onPageClick(evt) {
@@ -143,7 +142,7 @@ function fillMarvelModal(character, elModalSpiner) {
     const characterDescription = `${infCharacter.description}`;
     const characterImg = `${infCharacter.thumbnail.path}.${infCharacter.thumbnail.extension}`;
     html += `
-    <div class="modal-btn-wrapper">
+    <div class="marvel__modal-btn-wrapper">
     <button
           type="button"
           data-marvel-modal-close
@@ -151,15 +150,13 @@ function fillMarvelModal(character, elModalSpiner) {
         ></button>
     </div>
     
-<div class="marvel__modal">
+<div class="marvel__open-modal">
   <div>
     <img style="
-    width: 150px;
-    height: 200px;
     object-fit: cover;
 " src="${characterImg}" alt="${characterName}">
   </div>
-  <div class="marvel__modal-content">
+  <div class="marvel__open-modal-content">
     <h2 class="marvel__modal-name"><b> ${characterName}</h2>
     <p class="marvel__modal-description"><b>Description:</b> ${characterDescription}</p>
     <a href="/marvel-character.html?marvelId=${infCharacter.id}">Show More</a>

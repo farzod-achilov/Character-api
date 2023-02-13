@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marvel</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="marvel__body">
+    <div class="marvel__container">
+      <div class="marvel__logo-wrapper">
+        <img class="logo" src="./img/marvel-logo.png" alt="logo" />
+      </div>
+      <form class="marvel__form-search" data-marvel-form>
+        <input
+          class="marvel__input-seach"
+          placeholder="search characters"
+          name="name"
+          type="text"
+        />
+        <button class="marvel__seach-btn" type="submit">Search</button>
+      </form>
+      <div class="marvel__content-container" data-marval-characters></div>
+
+      <nav
+        aria-label="Marvel pagination"
+        class="d-flex justify-content-center my-3"
+      >
+        <ul data-marvel-pagination class="pagination"></ul>
+      </nav>
+    </div>
+    <div data-marval-modal class="marvel__modal" id="marvel-modal">
+      <img src="./img/spinner.svg" data-spiner class="d-none" alt="spinner" />
+      <div
+        data-marvel-modal-content
+        class="marvel__modal-content my-modal-content"
+      ></div>
+    </div>
+    <script src="./js/main.js"></script>
+    <script src="./js/marvel.js"></script>
+  </body>
+</html>
