@@ -207,7 +207,7 @@ async function getModalComics(comicsId) {
 
 async function getModalCharacter(comicsId) {
   const resCharacter = await fetch(
-    `http://gateway.marvel.com/v1/public/comics/${comicsId}/characters?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
+    `https://gateway.marvel.com/v1/public/comics/${comicsId}/characters?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
   );
   const characterData = await resCharacter.json();
   console.log(characterData.data.results);
