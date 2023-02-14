@@ -1,3 +1,94 @@
+.marvel__character {
+  max-width: 1440px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+.marvel__character-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 222;
+  display: none;
+  width: 150vh;
+  height: 100vh;
+}
+.marvel__character-modal-content {
+  width: 800px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.marvel__character-list h2 {
+  text-align: center;
+  color: white;
+  font-size: 26px;
+  margin: 0;
+  padding-bottom: 30px;
+  padding-top: 20px;
+}
+.marvel__character-projects {
+  display: flex;
+  flex-direction: column;
+}
+.marvel__character-projects-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.marvel__character-projects li {
+  list-style-type: none;
+  font-size: 14px;
+  max-width: 190px;
+  text-align: center;
+  color: white;
+  padding-top: 10px;
+}
+.marvel__character-projects ul {
+  margin: 0;
+  padding: 0;
+}
+.marvel__character-projects img {
+  width: 200px;
+  height: 300px;
+}
+.marvel__character-body {
+  background-color: #ff171f;
+}
+.marvel__character-header {
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+}
+.marvel__character-header ul {
+  margin: 0;
+  padding: 0;
+}
+.marvel__character-img img {
+  width: 80%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.marvel__character-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.marvel__character-content h2 {
+  color: white;
+  margin: 0;
+  font-size: 40px;
+}
+.marvel__character-content p {
+  color: white;
+  margin: 0;
+  font-size: 33px;
+  max-width: 600px;
+}
 .marvel__open-modal {
   display: flex;
   align-items: center;
