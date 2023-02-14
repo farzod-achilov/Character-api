@@ -197,7 +197,7 @@ function fillModalStories(storieses) {
 
 async function getModalComics(comicsId) {
   const res = await fetch(
-    `https://gateway.marvel.com:443/v1/public/comics?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100&id=${comicsId}`
+    `https://gateway.marvel.com/v1/public/comics?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100&id=${comicsId}`
   );
 
   const data = await res.json();
