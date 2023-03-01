@@ -1,13 +1,13 @@
-const elCharacterList = document.querySelector("[data-charcter]");
-const elCharacterModal = document.querySelector(
-  "[data-character-modal-content]"
-);
-
 function getIdCharcter() {
   const searchParams = new URLSearchParams(window.location.search);
 
   return searchParams.get("marvelId");
 }
+
+const elCharacterList = document.querySelector("[data-charcter]");
+const elCharacterModal = document.querySelector(
+  "[data-character-modal-content]"
+);
 
 getCharacter();
 
@@ -62,6 +62,8 @@ function renderMarvelCharacter(character) {
   elCharacterList.innerHTML = html;
 }
 
+// getByID
+
 async function getComicsById(characterId) {
   characterId = getIdCharcter();
   let res = await fetch(
@@ -70,6 +72,35 @@ async function getComicsById(characterId) {
   let data = await res.json();
   fillModalComics(data.data.results);
 }
+
+async function getSerialById(characterId) {
+  characterId = getIdCharcter();
+  let res = await fetch(
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/series?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
+  );
+  let data = await res.json();
+  fillModalSerial(data.data.results);
+}
+
+async function getEventsById(characterId) {
+  characterId = getIdCharcter();
+  let res = await fetch(
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/events?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
+  );
+  let data = await res.json();
+  fillModalEvents(data.data.results);
+}
+
+async function getStoriesById(characterId) {
+  characterId = getIdCharcter();
+  let res = await fetch(
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/stories?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
+  );
+  let data = await res.json();
+  fillModalStories(data.data.results);
+}
+
+// fillModal
 
 function fillModalComics(comicses) {
   const elCharacterList = document.querySelector("[data-character-comisc]");
@@ -90,42 +121,6 @@ function fillModalComics(comicses) {
   });
 }
 
-async function onCharacterModalOpen(evt) {
-  const el = evt.target.closest("[data-marvel-open]");
-
-  if (!el) return;
-
-  let characterId = el.dataset.comicsId;
-
-  await getModalComics(characterId);
-  await getModalCharacter(characterId);
-
-  let modalSelector = el.dataset.marvelOpen;
-  document.querySelector(modalSelector).classList.add("show");
-}
-
-function onCloseOutsideClick(evt) {
-  const el = evt.target;
-
-  if (!el.matches("[data-character-modal]")) return;
-
-  el.classList.remove("show");
-}
-
-document.addEventListener("click", (evt) => {
-  onCharacterModalOpen(evt);
-  onCloseOutsideClick(evt);
-});
-
-async function getSerialById(characterId) {
-  characterId = getIdCharcter();
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/series?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
-  );
-  let data = await res.json();
-  fillModalSerial(data.data.results);
-}
-
 function fillModalSerial(serials) {
   ModalSerial = document.querySelector("[data-character-serial]");
   let html = "";
@@ -137,19 +132,11 @@ function fillModalSerial(serials) {
       alt="${serial.title}"
     />
     <li>${serial.title}</li>
+    <button data-serial-id=${serial.id} data-marvel-open="#character-modal">pass</button>
   </div>
     `;
     ModalSerial.innerHTML = html;
   });
-}
-
-async function getEventsById(characterId) {
-  characterId = getIdCharcter();
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/events?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
-  );
-  let data = await res.json();
-  fillModalEvents(data.data.results);
 }
 
 function fillModalEvents(eventses) {
@@ -169,15 +156,6 @@ function fillModalEvents(eventses) {
   });
 }
 
-async function getStoriesById(characterId) {
-  characterId = getIdCharcter();
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/stories?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
-  );
-  let data = await res.json();
-  fillModalStories(data.data.results);
-}
-
 function fillModalStories(storieses) {
   ModalStories = document.querySelector("[data-character-stories]");
   let html = "";
@@ -195,14 +173,70 @@ function fillModalStories(storieses) {
   });
 }
 
+// characterOpenModal
+
+async function onCharacterModalOpen(evt) {
+  const el = evt.target.closest("[data-marvel-open]");
+
+  if (!el) return;
+
+  let characterId = el.dataset.comicsId;
+
+  if (characterId) {
+    await getModalComics(characterId);
+    await getModalCharacter(characterId);
+  }
+
+  let serialId = el.dataset.serialId;
+
+  if (serialId) {
+    await getModalSerial(serialId);
+    await getModalCharacter(serialId);
+  }
+
+  console.log(serialId);
+
+  let modalSelector = el.dataset.marvelOpen;
+  document.querySelector(modalSelector).classList.add("show");
+  document.querySelector("body").classList.add("hidden");
+}
+
+function onCloseOutsideClick(evt) {
+  const el = evt.target;
+
+  if (!el.matches("[data-character-modal]")) return;
+
+  el.classList.remove("show");
+  document.querySelector("body").classList.remove("hidden");
+}
+
+document.addEventListener("click", (evt) => {
+  onCharacterModalOpen(evt);
+  onCloseOutsideClick(evt);
+});
+
+// getModalContent
+
 async function getModalComics(comicsId) {
   const res = await fetch(
     `https://gateway.marvel.com/v1/public/comics?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100&id=${comicsId}`
   );
 
   const data = await res.json();
-
   FillComicsModal(data.data.results[0]);
+  renderCreator(data.data.results[0].creators.items);
+  renderTextObject(data.data.results[0].textObjects);
+}
+
+async function getModalSerial(serialId) {
+  const res = await fetch(
+    `https://gateway.marvel.com/v1/public/series?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100&id=${serialId}`
+  );
+  const data = await res.json();
+
+  FillSerialModal(data.data.results[0]);
+  renderCreator(data.data.results[0].creators.items);
+  console.log(data.data.results[0]);
 }
 
 async function getModalCharacter(comicsId) {
@@ -210,12 +244,12 @@ async function getModalCharacter(comicsId) {
     `https://gateway.marvel.com/v1/public/comics/${comicsId}/characters?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
   );
   const characterData = await resCharacter.json();
-  console.log(characterData.data.results);
   renderCharacter(characterData.data.results);
 }
 
+// fillModalContent
+
 function FillComicsModal(comics) {
-  console.log(comics);
   let html = "";
   html += `
 <div class="marvel__character-modal-inside">
@@ -225,24 +259,74 @@ function FillComicsModal(comics) {
   <div class="marvel__character-modal-inside-content">
     <h2>${comics.title}</h2>
     <p>${comics.description}</p>
-  </div>
-  <div
-    data-modal-charcter
+    <p>Format: ${comics.format}</p>
+    <div
+    data-modal-character
     class="marvel__character-modal-inside-character"
   ></div>
+  <div class="marvel__character-modal-inside-creator" data-creator-list></div>
+  </div>
+  <div data-text-object class="marvel__character-modal-inside-textObject"></div>
 </div>`;
 
   elCharacterModal.innerHTML = html;
 }
 
+function FillSerialModal(serial) {
+  let html = "";
+  html += `
+<div class="marvel__character-modal-inside">
+  <div class="marvel__character-modal-inside-img">
+    <img src="${serial.thumbnail.path}.${serial.thumbnail.extension}" alt="${serial.title}" />  
+  </div>
+  <div class="marvel__character-modal-inside-content">
+    <h2>${serial.title}</h2>
+    <p>${serial.description}</p>
+    <p>Start Year: ${serial.startYear}</p>
+    <div data-modal-character class="marvel__character-modal-inside-character"></div>
+    <div class="marvel__character-modal-inside-creator" data-creator-list></div>
+    <div data-text-object class="marvel__character-modal-inside-textObject"></div>
+  <div data-text-object class="marvel__character-modal-inside-textObject"></div>
+</div>`;
+  elCharacterModal.innerHTML = html;
+}
+
 function renderCharacter(characters) {
-  const elCharacterList = document.querySelector("[data-modal-charcter]");
+  const elCharacterList = document.querySelector("[data-modal-character]");
   let html = "";
   characters.forEach((character) => {
     html += `
-<img src="${character.thumbnail.path}.${character.thumbnail.extension}" alt="${character.name}">
-<h2>${character.name}</h2>
+<div class="marvel__character-modal-inside-character-wrapper">
+  <img src="${character.thumbnail.path}.${character.thumbnail.extension}" alt="${character.name}">
+  <h2>${character.name}</h2>
+</div>
   `;
   });
   elCharacterList.innerHTML = html;
+}
+
+function renderCreator(creators) {
+  let htmlCreator = "";
+  creators.forEach((creator) => {
+    const elCreatorList = document.querySelector("[data-creator-list]");
+    htmlCreator += `
+    <div class="marvel__character-modal-inside-creator-wrapper">
+    <p>
+      <b class="marvel__character-modal-inside-creator-role">${creator.role}</b>:<b class="marvel__character-modal-inside-creator-name">${creator.name}</b>
+    </p>
+  </div>
+  `;
+    elCreatorList.innerHTML = htmlCreator;
+  });
+}
+
+function renderTextObject(textObject) {
+  const elObjectlist = document.querySelector("[data-text-object]");
+  let html = "";
+  textObject.forEach((text) => {
+    html += `
+    <h3>${text.text}</h3>
+    `;
+  });
+  elObjectlist.innerHTML = html;
 }

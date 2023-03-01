@@ -15,19 +15,46 @@
     />
   </head>
   <body class="marvel__body">
+    <header class="marvel__header">
+      <div class="container">
+        <div class="marvel__header">
+          <div class="marvel__header-logo">
+            <h1>
+              <a href="#">
+                <img src="./img/marvel-mini-logo.png" alt="logo" />
+              </a>
+              <bold> <b>Marvel</b><b>Characters</b> </bold>
+            </h1>
+          </div>
+          <form class="marvel__form-search" data-marvel-form>
+            <input
+              class="marvel__input-seach"
+              placeholder="search characters"
+              name="name"
+              type="text"
+            />
+            <button class="marvel__seach-btn" type="submit">Search</button>
+          </form>
+          <div class="marvel__header-nav">
+            <nav>
+              <ul>
+                <li>Home</li>
+                <li>character</li>
+                <li>Comics</li>
+                <li>Serial</li>
+                <li>ASFAS</li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
     <div class="marvel__container">
       <div class="marvel__logo-wrapper">
-        <img class="logo" src="./img/marvel-logo.png" alt="logo" />
+        <img class="logo" src="./img/marvel-mini-logo.png" alt="logo" />
+        <h2>Marvel Characters</h2>
       </div>
-      <form class="marvel__form-search" data-marvel-form>
-        <input
-          class="marvel__input-seach"
-          placeholder="search characters"
-          name="name"
-          type="text"
-        />
-        <button class="marvel__seach-btn" type="submit">Search</button>
-      </form>
+
       <div class="marvel__content-container" data-marval-characters></div>
 
       <nav

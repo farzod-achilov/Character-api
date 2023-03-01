@@ -1,11 +1,13 @@
 // PRIVATEKEY = `aaa48316379abee3e253d565d626c799a8958a41`
 // PUBLICKEY = `2916c9e0417f61774e61f7a9ba72d384`
+
 const elListMarvel = document.querySelector("[data-marval-characters]");
 const elForm = document.querySelector("[data-marvel-form]");
 const elPagination = document.querySelector("[data-marvel-pagination]");
 const elMarvelModalContent = document.querySelector(
   "[data-marvel-modal-content]"
 );
+
 getMarvelCharacters();
 
 async function getMarvelCharacters(page = 1) {
@@ -44,14 +46,6 @@ function renderMarvelCharacters(characters) {
   elListMarvel.innerHTML = html;
 }
 
-elForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  elPagination.classList.add("d-none");
-  const formdata = new FormData(elForm);
-  const name = formdata.get("name");
-  searchMarvelCharacters(name);
-});
-
 async function searchMarvelCharacters(quary) {
   if (quary === "") {
     return;
@@ -73,55 +67,6 @@ function renderPagination(totalPages) {
   }
 
   elPagination.innerHTML = html;
-}
-
-document.addEventListener("click", (evt) => {
-  onPageClick(evt);
-  onMarvelModalOpen(evt);
-  onMarvelModalClose(evt);
-  onCloseOutsideClick(evt);
-});
-
-function onPageClick(evt) {
-  const el = evt.target.closest("[data-marvel-page]");
-
-  if (!el) return;
-
-  evt.preventDefault();
-  getMarvelCharacters(el.dataset.marvelPage);
-}
-
-async function onMarvelModalOpen(evt) {
-  const el = evt.target.closest("[data-marvel-modal-open]");
-
-  if (!el) return;
-
-  let characterId = el.dataset.characterId;
-
-  await getCharacter(characterId);
-  // await getComicsById(characterId);
-  // await getSerialById(characterId);
-  // await getEventsById(characterId);
-  // await getStoriesById(characterId);
-
-  let modalSelector = el.dataset.marvelModalOpen;
-  document.querySelector(modalSelector).classList.add("show");
-}
-
-function onMarvelModalClose(evt) {
-  const el = evt.target.closest("[data-marvel-modal-close]");
-
-  if (!el) return;
-
-  el.parentElement.parentElement.parentElement.classList.remove("show");
-}
-
-function onCloseOutsideClick(evt) {
-  const el = evt.target;
-
-  if (!el.matches("[data-marvel-modal]")) return;
-
-  el.classList.remove("show");
 }
 
 async function getCharacter(characterId) {
@@ -166,4 +111,57 @@ function fillMarvelModal(character, elModalSpiner) {
 
   elMarvelModalContent.innerHTML = html;
   elModalSpiner.classList.add("d-none");
+}
+
+elForm.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+  elPagination.classList.add("d-none");
+  const formdata = new FormData(elForm);
+  const name = formdata.get("name");
+  searchMarvelCharacters(name);
+});
+
+document.addEventListener("click", (evt) => {
+  onPageClick(evt);
+  onMarvelModalOpen(evt);
+  onMarvelModalClose(evt);
+  onCloseOutsideClick(evt);
+});
+
+function onPageClick(evt) {
+  const el = evt.target.closest("[data-marvel-page]");
+
+  if (!el) return;
+
+  evt.preventDefault();
+  getMarvelCharacters(el.dataset.marvelPage);
+}
+
+async function onMarvelModalOpen(evt) {
+  const el = evt.target.closest("[data-marvel-modal-open]");
+
+  if (!el) return;
+
+  let characterId = el.dataset.characterId;
+
+  await getCharacter(characterId);
+
+  let modalSelector = el.dataset.marvelModalOpen;
+  document.querySelector(modalSelector).classList.add("show");
+}
+
+function onMarvelModalClose(evt) {
+  const el = evt.target.closest("[data-marvel-modal-close]");
+
+  if (!el) return;
+
+  el.parentElement.parentElement.parentElement.classList.remove("show");
+}
+
+function onCloseOutsideClick(evt) {
+  const el = evt.target;
+
+  if (!el.matches("[data-marvel-modal]")) return;
+
+  el.classList.remove("show");
 }

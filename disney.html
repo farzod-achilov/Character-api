@@ -11,26 +11,28 @@
       href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
     />
   </head>
-  <body class="disney-body">
-    <div class="disney-logo-wrapper">
-      <img src="/img/disney-logo.png" alt="logo" />
+  <body class="disnay__body">
+    <div class="disnay">
+      <div class="disnay__logo-wrapper">
+        <img src="/img/disney-logo.png" alt="logo" />
+      </div>
+      <form class="disnay__form-search" data-disney-form>
+        <input
+          class="input-seach disney-search"
+          placeholder="search characters"
+          type="text"
+          name="name"
+        />
+        <button class="seach-btn" type="submit"></button>
+      </form>
+      <div class="disnay__container" data-disney></div>
+      <nav
+        aria-label="Marvel pagination"
+        class="d-flex justify-content-center my-3"
+      >
+        <ul data-disney-pagination class="pagination"></ul>
+      </nav>
     </div>
-    <form class="form-search" data-disney-form>
-      <input
-        class="input-seach disney-search"
-        placeholder="search characters"
-        type="text"
-        name="name"
-      />
-      <button class="seach-btn" type="submit"></button>
-    </form>
-    <div class="disnay-container" data-disney></div>
-    <nav
-      aria-label="Marvel pagination"
-      class="d-flex justify-content-center my-3"
-    >
-      <ul data-disney-pagination class="pagination"></ul>
-    </nav>
     <script src="./js/disney.js"></script>
   </body>
 </html>

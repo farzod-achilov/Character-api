@@ -21,12 +21,12 @@ function renderDisneyCharacters(characters) {
       return character;
     }
     html += `
-<div class="disney">
-  <div class="disney-img">
+<div class="disnay__card">
+  <div class="disnay__card-img">
     <img src="${character.imageUrl}" alt="${character.name}" />
 </div>
-  <div class="disney-content">
-    <p class="disney-name">${character.name}</p>
+  <div class="disnay__card-content">
+    <p class="disnay__card-content-name">${character.name}</p>
   </div>
 </div>
 
