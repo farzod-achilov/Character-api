@@ -1,6 +1,3 @@
-// PRIVATEKEY = `aaa48316379abee3e253d565d626c799a8958a41`
-// PUBLICKEY = `2916c9e0417f61774e61f7a9ba72d384`
-
 const elListMarvel = document.querySelector("[data-marval-characters]");
 const elForm = document.querySelector("[data-marvel-form]");
 const elPagination = document.querySelector("[data-marvel-pagination]");
@@ -10,6 +7,7 @@ const elMarvelModalContent = document.querySelector(
 
 getMarvelCharacters();
 
+// get Marvel Characters
 async function getMarvelCharacters(page = 1) {
   const marvelCharacters = await fetch(`${url}&offset=${page * 75 - 75}`);
   const marvelData = await marvelCharacters.json();
@@ -17,6 +15,7 @@ async function getMarvelCharacters(page = 1) {
   renderPagination(Math.ceil(+marvelData.data.total / 75));
 }
 
+// render Main Page
 function renderMarvelCharacters(characters) {
   elListMarvel.innerHTML = "";
   let html = "";
@@ -42,7 +41,6 @@ function renderMarvelCharacters(characters) {
   </button>
     `;
   });
-
   elListMarvel.innerHTML = html;
 }
 

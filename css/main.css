@@ -16,9 +16,12 @@
   justify-content: flex-end;
   z-index: 222;
   display: none;
-  width: 200vh;
-  height: 100vh;
+  width: 100vw;
+  height: 100%;
   overflow-y: scroll;
+}
+.marvel__character-modal-inside {
+  margin-top: 250px;
 }
 .marvel__character-modal-inside-textObject h3 {
   text-align: center;
@@ -73,7 +76,7 @@
   justify-content: center;
 }
 .marvel__character-modal-inside-img img {
-  width: 450px;
+  width: 300px;
 }
 .marvel__character-modal-inside-character {
   display: flex;
@@ -101,7 +104,6 @@
 }
 .marvel__character-modal-content {
   width: 800px;
-  height: 100vh;
   padding: 30px;
   background-color: #fff;
 }

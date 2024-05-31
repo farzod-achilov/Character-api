@@ -20,10 +20,9 @@ async function getCharacter(characterId) {
 }
 
 function renderMarvelCharacter(character) {
-  getComicsById();
-  getEventsById();
-  getSerialById();
-  getStoriesById();
+  getByID("comics");
+  getByID("events");
+  getByID("series");
   elCharacterList.innerHTML = "";
   let html = "";
   character.forEach((hero) => {
@@ -41,19 +40,15 @@ function renderMarvelCharacter(character) {
   <div class="marvel__character-list">
   <div>
   <h2>Comisc List</h2>
-  <ul class="marvel__character-projects-list" data-character-comisc></ul>
+  <ul class="marvel__character-projects-list" data-character-comics></ul>
   </div>
   <div>
-  <h2>Serial List</h2>
-  <ul class="marvel__character-projects-list" data-character-serial></ul>
+  <h2>Series List</h2>
+  <ul class="marvel__character-projects-list" data-character-series></ul>
   </div>
   <div>
   <h2>Events List</h2>
   <ul class="marvel__character-projects-list" data-character-events></ul>
-  </div>
-  <div>
-  <h2>Stories List</h2>
-  <ul class="marvel__character-projects-list" data-character-stories></ul>
   </div>
   </div>
 </div>
@@ -64,115 +59,34 @@ function renderMarvelCharacter(character) {
 
 // getByID
 
-async function getComicsById(characterId) {
+async function getByID(janre) {
   characterId = getIdCharcter();
   let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/comics?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
+    `https://gateway.marvel.com/v1/public/characters/${characterId}/${janre}?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
   );
   let data = await res.json();
-  fillModalComics(data.data.results);
+  console.log(data.data.results);
+  fillModal(janre, data.data.results, `[data-character-${janre}]`);
 }
 
-async function getSerialById(characterId) {
-  characterId = getIdCharcter();
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/series?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
-  );
-  let data = await res.json();
-  fillModalSerial(data.data.results);
-}
-
-async function getEventsById(characterId) {
-  characterId = getIdCharcter();
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/events?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
-  );
-  let data = await res.json();
-  fillModalEvents(data.data.results);
-}
-
-async function getStoriesById(characterId) {
-  characterId = getIdCharcter();
-  let res = await fetch(
-    `https://gateway.marvel.com/v1/public/characters/${characterId}/stories?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=100`
-  );
-  let data = await res.json();
-  fillModalStories(data.data.results);
-}
-
-// fillModal
-
-function fillModalComics(comicses) {
-  const elCharacterList = document.querySelector("[data-character-comisc]");
+function fillModal(janreName, janres, list) {
+  const elementList = document.querySelector(list);
   let html = "";
-  comicses.forEach((comics) => {
+  janres.forEach((janre) => {
     html += `
 <div class="marvel__character-projects">
   <img
-    src="${comics.thumbnail.path}.${comics.thumbnail.extension}"
-    alt="${comics.title}"
+    src="${janre.thumbnail.path}.${janre.thumbnail.extension}"
+    alt="${janre.title}"
   />  
-  <li>${comics.title}</li>
-  <a href="/marvel-comics.html?comicsId=${comics.id}">Show More  </a>
-  <button data-comics-id=${comics.id} data-marvel-open="#character-modal">pass</button>
+  <li>${janre.title}</li>
+  <a href="/marvel-${janreName}.html?${janreName}Id=${janre.id}">Show More  </a>
+  <button data-${janreName}-id=${janre.id} data-marvel-open="#character-modal">pass</button>
 </div>
      `;
-    elCharacterList.innerHTML = html;
+    elementList.innerHTML = html;
   });
 }
-
-function fillModalSerial(serials) {
-  ModalSerial = document.querySelector("[data-character-serial]");
-  let html = "";
-  serials.forEach((serial) => {
-    html += `
-    <div class="marvel__character-projects">
-    <img
-      src="${serial.thumbnail.path}.${serial.thumbnail.extension}"
-      alt="${serial.title}"
-    />
-    <li>${serial.title}</li>
-    <button data-serial-id=${serial.id} data-marvel-open="#character-modal">pass</button>
-  </div>
-    `;
-    ModalSerial.innerHTML = html;
-  });
-}
-
-function fillModalEvents(eventses) {
-  ModalEvents = document.querySelector("[data-character-events]");
-  let html = "";
-  eventses.forEach((events) => {
-    html += `
-    <div class="marvel__character-projects">
-    <img
-      src="${events.thumbnail.path}.${events.thumbnail.extension}"
-      alt="${events.title}"
-    />
-    <li>${events.title}</li>
-  </div>
-    `;
-    ModalEvents.innerHTML = html;
-  });
-}
-
-function fillModalStories(storieses) {
-  ModalStories = document.querySelector("[data-character-stories]");
-  let html = "";
-  storieses.forEach((stories) => {
-    html += `
-    <div class="marvel__character-projects">
-    <img
-      src="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
-      alt="${stories.title}"
-    />
-    <li>${stories.title}</li>
-  </div>
-    `;
-    ModalStories.innerHTML = html;
-  });
-}
-
 // characterOpenModal
 
 async function onCharacterModalOpen(evt) {
