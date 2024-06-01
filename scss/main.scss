@@ -1,3 +1,6 @@
-@import "./blocks/marvel";
-@import "./blocks/disney";
+@import "./base/container";
+@import "./base/fonts";
+@import "./blocks/marvel/marvel";
+@import "./blocks/disney/disney";
 @import "./blocks/index";
+@import "./blocks/rickAndMorty/rickAndMorty";

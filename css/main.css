@@ -1,3 +1,15 @@
+.container {
+  margin: 0 auto;
+  padding: 0 15px;
+  max-width: 1440px;
+}
+
+@font-face {
+  font-family: "RickandMorty";
+  src: url(/fonts/rickandmorty.woff2);
+  font-style: "style";
+  font-weight: "weight";
+}
 * {
   box-sizing: border-box;
 }
@@ -511,4 +523,49 @@ swiper-slide {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.RickAndMorty {
+  font-family: "RickAndMorty";
+  color: #00b0c8;
+  text-shadow: -3px -3px 7px #82bd48;
+  background: #0a1e33;
+}
+
+.rickAndMorty_logo {
+  margin: 0;
+  padding: 0;
+  padding-top: 40px;
+  text-align: center;
+}
+
+.rickAndMorty_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 50px;
+}
+
+.rickAndMorty_name {
+  text-align: center;
+  font-size: 29px;
+  margin: 0;
+  padding-top: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.rickAndMorty_character-imgWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.rickAndMorty_character-img {
+  position: absolute;
+  border-radius: 50%;
 }/*# sourceMappingURL=main.css.map */

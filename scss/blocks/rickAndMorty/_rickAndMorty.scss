@@ -1,0 +1,44 @@
+.RickAndMorty {
+  font-family: "RickAndMorty";
+  color: #00b0c8;
+  text-shadow: -3px -3px 7px #82bd48;
+  background: #0a1e33;
+}
+
+.rickAndMorty_logo {
+  margin: 0;
+  padding: 0;
+  padding-top: 40px;
+  text-align: center;
+}
+
+.rickAndMorty_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 50px;
+}
+
+.rickAndMorty_name {
+  text-align: center;
+  font-size: 29px;
+  margin: 0;
+  padding-top: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.rickAndMorty_character-imgWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.rickAndMorty_character-img {
+  position: absolute;
+  border-radius: 50%;
+}

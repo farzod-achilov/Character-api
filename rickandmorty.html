@@ -5,10 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
   </head>
-  <body>
-    <div data-list-rickAndMorty></div>
-    <script src="./js/main.js"></script>
+  <body class="RickAndMorty">
+    <header>
+      <div class="logo">
+        <h1 class="rickAndMorty_logo">
+          <a href="">
+            <img src="./img/Rick-and-Morty-logo.svg" alt="logo" />
+          </a>
+        </h1>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <div class="rickAndMorty_wrapper" data-list-rickAndMorty></div>
+      </div>
+      <script src="./js/main.js"></script>
+      <script src="./js/rickandmorty.js"></script>
+    </main>
+    <nav
+      aria-label="Marvel pagination"
+      class="d-flex justify-content-center my-3"
+    >
+      <ul data-rickandmorty-pagination class="pagination"></ul>
+    </nav>
+    <footer></footer>
     <script src="./js/rickandmorty.js"></script>
   </body>
 </html>
