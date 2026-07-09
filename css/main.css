@@ -10,6 +10,160 @@
   font-style: "style";
   font-weight: "weight";
 }
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 24px;
+  background: #14141c;
+  font-family: Arial, sans-serif;
+}
+.site-nav__brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.site-nav__toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-nav__link {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+.site-nav__link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+.site-nav__link.is-active {
+  background: linear-gradient(135deg, #6d5efc, #ff5f7e);
+  color: #fff;
+}
+@media (max-width: 768px) {
+  .site-nav__toggle {
+    display: inline-block;
+  }
+  .site-nav__list {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .site-nav__list.is-open {
+    display: flex;
+  }
+}
+
+.state-message {
+  width: 100%;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+.state-message p {
+  display: inline-block;
+  margin: 0;
+  padding: 14px 24px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  font-size: 16px;
+  color: #444;
+}
+.state-message--loading p {
+  color: #6d5efc;
+}
+.state-message--error p {
+  color: #c0392b;
+}
+.state-message--empty p {
+  color: #888;
+}
+
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+  font-family: Arial, sans-serif;
+}
+
+.char-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.char-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+.char-card__img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.char-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.char-card__content {
+  padding: 12px 14px 16px;
+}
+.char-card__title {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #222;
+}
+.char-card__subtitle {
+  font-size: 13px;
+  color: #777;
+  margin: 0;
+}
+
+.page-logo {
+  display: block;
+  max-width: 220px;
+  margin: 30px auto 0;
+}
+.page-logo img {
+  width: 100%;
+  height: auto;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -107,8 +261,7 @@
 .marvel__character-modal-inside-character-wrapper img {
   width: 100px;
   height: 100px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .marvel__character-modal-inside-character-wrapper h2 {
   font-size: 14px;
@@ -167,8 +320,7 @@
 .marvel__character-img img {
   width: 80%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .marvel__character-content {
   display: flex;
@@ -283,8 +435,7 @@
 .marvel__card-img img {
   width: 200px;
   height: 200px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-bottom-left-radius: 40px;
   border-top-right-radius: 40px;
   border-bottom-right-radius: 75px;
@@ -331,6 +482,68 @@
   color: white;
   margin: 0;
   padding-bottom: 60px;
+}
+
+.marvel__stats {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.marvel__stat-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 34px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.marvel__stat-label {
+  text-transform: capitalize;
+  color: #555;
+}
+
+.marvel__stat-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: #eee;
+  overflow: hidden;
+}
+.marvel__stat-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #ff171f, #ff8a3d);
+  border-radius: 4px;
+}
+
+.marvel__stat-value {
+  text-align: right;
+  color: #555;
+}
+
+.marvel__character-facts {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  color: #fff;
+}
+.marvel__character-facts li {
+  font-size: 16px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.marvel__character-stats {
+  max-width: 500px;
+  margin: 30px auto 60px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.marvel__character-stats h2 {
+  color: #ff171f !important;
+  font-size: 20px !important;
+  padding-bottom: 14px !important;
 }
 
 .show {
@@ -407,8 +620,7 @@
 .disnay__card-img img {
   width: 200px;
   height: 200px;
-  -o-object-fit: revert;
-     object-fit: revert;
+  object-fit: revert;
 }
 .disnay__card-content p {
   margin: 0;
@@ -493,8 +705,7 @@
 .index__marvel img {
   width: 200px;
   height: 200px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-bottom-left-radius: 40px;
   border-top-right-radius: 40px;
   border-bottom-right-radius: 75px;
@@ -568,4 +779,6 @@ swiper-slide {
 .rickAndMorty_character-img {
   position: absolute;
   border-radius: 50%;
-}/*# sourceMappingURL=main.css.map */
+}
+
+/*# sourceMappingURL=main.css.map */

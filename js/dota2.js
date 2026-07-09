@@ -1,24 +1,37 @@
-const api_key_dota = `07ecf9da-64f5-48a6-a0a9-782abe529228`;
-const urlDota = `https://api.opendota.com/api/heroStats?api_key=${api_key_dota}`;
+const urlDota = `https://api.opendota.com/api/heroStats?api_key=${DOTA_API_KEY}`;
 
 const elDotaList = document.querySelector("[data-dota-list]");
 
 getDotaCharacters();
 
 async function getDotaCharacters() {
-  const dotaCharacters = await fetch(`${urlDota}`);
-  const dotaData = await dotaCharacters.json();
-  renderDotaCharacters(dotaData);
+  renderState(elDotaList, "loading", "Загружаем героев Dota 2...");
+  try {
+    const dotaData = await fetchJson(urlDota);
+    renderDotaCharacters(dotaData);
+  } catch (err) {
+    renderState(
+      elDotaList,
+      "error",
+      "Не удалось загрузить героев. Попробуйте позже."
+    );
+  }
 }
 
 function renderDotaCharacters(characters) {
-  elDotaList.innerHTML = "";
+  if (!characters || characters.length === 0) {
+    renderState(elDotaList, "empty", "Герои не найдены.");
+    return;
+  }
+
   let html = "";
   characters.forEach((character) => {
     html += `
-<div class="dota-card">
-  <img src="https://api.opendota.com${character.img}" alt="${character.localized_name}">
-  <h2>${character.localized_name}</h2>
+<div class="char-card">
+  <div class="char-card__img"><img src="https://api.opendota.com${character.img}" alt="${character.localized_name}" loading="lazy" /></div>
+  <div class="char-card__content">
+    <h2 class="char-card__title">${character.localized_name}</h2>
+  </div>
 </div>
       `;
   });

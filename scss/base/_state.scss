@@ -1,0 +1,29 @@
+.state-message {
+  width: 100%;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+
+  p {
+    display: inline-block;
+    margin: 0;
+    padding: 14px 24px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    font-size: 16px;
+    color: #444;
+  }
+
+  &--loading p {
+    color: #6d5efc;
+  }
+
+  &--error p {
+    color: #c0392b;
+  }
+
+  &--empty p {
+    color: #888;
+  }
+}

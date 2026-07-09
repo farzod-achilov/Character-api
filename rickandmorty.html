@@ -4,15 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Rick and Morty Characters — Character API</title>
+    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
     <link rel="stylesheet" href="./css/main.css" />
     <link rel="stylesheet" href="./css/bootstrap.css" />
   </head>
   <body class="RickAndMorty">
+    <div id="site-header"></div>
     <header>
       <div class="logo">
         <h1 class="rickAndMorty_logo">
-          <a href="">
+          <a href="./rickandmorty.html">
             <img src="./img/Rick-and-Morty-logo.svg" alt="logo" />
           </a>
         </h1>
@@ -22,16 +24,16 @@
       <div class="container">
         <div class="rickAndMorty_wrapper" data-list-rickAndMorty></div>
       </div>
-      <script src="./js/main.js"></script>
-      <script src="./js/rickandmorty.js"></script>
     </main>
     <nav
-      aria-label="Marvel pagination"
+      aria-label="Rick and Morty pagination"
       class="d-flex justify-content-center my-3"
     >
       <ul data-rickandmorty-pagination class="pagination"></ul>
     </nav>
     <footer></footer>
+    <script src="./js/main.js"></script>
     <script src="./js/rickandmorty.js"></script>
+    <script src="./js/nav.js"></script>
   </body>
 </html>

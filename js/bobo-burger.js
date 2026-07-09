@@ -7,22 +7,33 @@ const Base_URL = "https://bobsburgers-api.herokuapp.com/";
 getCharacter(Base_URL);
 
 async function getCharacter(url) {
-  const getCharacter = await fetch(`${url}characters`);
-  const characterData = await getCharacter.json();
-
-  renderBobCharacter(characterData);
-  console.log(characterData[0]);
+  renderState(elList, "loading", "Загружаем персонажей...");
+  try {
+    const characterData = await fetchJson(`${url}characters`);
+    renderBobCharacter(characterData);
+  } catch (err) {
+    renderState(
+      elList,
+      "error",
+      "Не удалось загрузить персонажей. Попробуйте позже."
+    );
+  }
 }
 
 function renderBobCharacter(characters) {
+  if (!characters || characters.length === 0) {
+    renderState(elList, "empty", "Персонажи не найдены.");
+    return;
+  }
+
   let html = "";
   characters.forEach((character) => {
     html += `
-    <div>
-    <img src="${character.image}" alt="${character.name}" />
-    <div>
-      <h2>${character.name}</h2>
-      <p>${character.occupation}</p>
+    <div class="char-card">
+    <div class="char-card__img"><img src="${character.image}" alt="${character.name}" loading="lazy" /></div>
+    <div class="char-card__content">
+      <h2 class="char-card__title">${character.name}</h2>
+      <p class="char-card__subtitle">${character.occupation || ""}</p>
     </div>
   </div>
    `;

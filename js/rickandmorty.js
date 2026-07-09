@@ -1,14 +1,22 @@
-ellist = document.querySelector("[data-list-rickAndMorty]");
-elPagination = document.querySelector("[data-rickandmorty-pagination]");
+const ellist = document.querySelector("[data-list-rickAndMorty]");
+const elPagination = document.querySelector("[data-rickandmorty-pagination]");
 
 getCharacter(BaseRickAndMorty);
 
 async function getCharacter(url, page = 1) {
-  const character = await fetch(`${url}/character?page=${page}`);
-  const characterData = await character.json();
-  console.log(characterData);
-  renderCharacter(characterData.results);
-  renderPagination(characterData.info.pages);
+  renderState(ellist, "loading", "Загружаем персонажей...");
+  elPagination.innerHTML = "";
+  try {
+    const characterData = await fetchJson(`${url}/character?page=${page}`);
+    renderCharacter(characterData.results);
+    renderPagination(elPagination, characterData.info.pages, "rickandmorty");
+  } catch (err) {
+    renderState(
+      ellist,
+      "error",
+      "Не удалось загрузить персонажей. Попробуйте позже."
+    );
+  }
 }
 
 function renderCharacter(characters) {
@@ -25,19 +33,6 @@ function renderCharacter(characters) {
      `;
   });
   ellist.innerHTML = html;
-}
-
-function renderPagination(page) {
-  elPagination.innerHTML = "";
-  let html = "";
-
-  for (let i = 1; i <= page; i++) {
-    html += `
-    <li class="page-item"><a class="page-link" data-rickandmorty-page="${i}" href="?page=${i}">${i}</a></li>
-    `;
-  }
-
-  elPagination.innerHTML = html;
 }
 
 document.addEventListener("click", (evt) => {

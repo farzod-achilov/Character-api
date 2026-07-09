@@ -1,6 +1,46 @@
-const apikey = "2916c9e0417f61774e61f7a9ba72d384";
-const ts = "25/01/2023, 05:58:15";
-const hash = "4c1b759a2e5f993858c77f6c20f934b6";
-const url = `https://gateway.marvel.com:443/v1/public/characters?apikey=${apikey}&ts=${ts}&hash=${hash}&limit=70`;
-
 const BaseRickAndMorty = "https://rickandmortyapi.com/api";
+
+// Общий helper: fetch + разбор JSON с проверкой статуса ответа
+async function fetchJson(requestUrl) {
+  const res = await fetch(requestUrl);
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+// Общий helper: рисует состояние "загрузка" / "ошибка" / "пусто" в контейнере списка
+function renderState(container, type, message) {
+  if (!container) return;
+  container.innerHTML = `
+    <div class="state-message state-message--${type}">
+      <p>${message}</p>
+    </div>
+  `;
+}
+
+// Прячем картинки с битыми ссылками (сторонние API периодически отдают мёртвые URL)
+document.addEventListener(
+  "error",
+  (evt) => {
+    if (evt.target.tagName === "IMG") {
+      evt.target.style.visibility = "hidden";
+    }
+  },
+  true
+);
+
+// Общий helper: рисует пагинацию по одному и тому же шаблону для всех разделов
+function renderPagination(container, totalPages, dataAttr) {
+  if (!container) return;
+  container.innerHTML = "";
+  if (!totalPages || totalPages <= 1) return;
+
+  let html = "";
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+    <li class="page-item"><a class="page-link" data-${dataAttr}-page="${i}" href="?page=${i}">${i}</a></li>
+    `;
+  }
+  container.innerHTML = html;
+}

@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "swiper": "^9.1.0"
+  "name": "character-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static multi-page site exploring characters from Marvel, Rick and Morty, Disney, Dota 2, Amiibo and Bob's Burgers public APIs.",
+  "scripts": {
+    "start": "npx serve ."
   }
 }

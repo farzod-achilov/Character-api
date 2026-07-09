@@ -1,3 +1,9 @@
+// Marvel Comics API (developer.marvel.com) требует приватный ключ, которого в этом
+// проекте нет, поэтому раздел работает на открытом статическом датасете
+// akabab/superhero-api — без ключей, с открытым CORS, 269 персонажей Marvel Comics.
+const MARVEL_DATA_URL = "https://akabab.github.io/superhero-api/api/all.json";
+const MARVEL_PAGE_SIZE = 24;
+
 const elListMarvel = document.querySelector("[data-marval-characters]");
 const elForm = document.querySelector("[data-marvel-form]");
 const elPagination = document.querySelector("[data-marvel-pagination]");
@@ -5,37 +11,58 @@ const elMarvelModalContent = document.querySelector(
   "[data-marvel-modal-content]"
 );
 
-getMarvelCharacters();
+let allMarvelCharacters = [];
+let filteredMarvelCharacters = [];
 
-// get Marvel Characters
-async function getMarvelCharacters(page = 1) {
-  const marvelCharacters = await fetch(`${url}&offset=${page * 75 - 75}`);
-  const marvelData = await marvelCharacters.json();
-  renderMarvelCharacters(marvelData.data.results);
-  renderPagination(Math.ceil(+marvelData.data.total / 75));
+initMarvel();
+
+async function initMarvel() {
+  renderState(elListMarvel, "loading", "Загружаем персонажей Marvel...");
+  try {
+    const data = await fetchJson(MARVEL_DATA_URL);
+    allMarvelCharacters = data
+      .filter((character) => character.biography.publisher === "Marvel Comics")
+      .sort((a, b) => a.name.localeCompare(b.name));
+    filteredMarvelCharacters = allMarvelCharacters;
+    renderMarvelPage(1);
+  } catch (err) {
+    renderState(
+      elListMarvel,
+      "error",
+      "Не удалось загрузить персонажей Marvel. Попробуйте позже."
+    );
+  }
 }
 
-// render Main Page
+function renderMarvelPage(page) {
+  const totalPages = Math.ceil(
+    filteredMarvelCharacters.length / MARVEL_PAGE_SIZE
+  );
+  const start = (page - 1) * MARVEL_PAGE_SIZE;
+  const pageItems = filteredMarvelCharacters.slice(
+    start,
+    start + MARVEL_PAGE_SIZE
+  );
+  renderMarvelCharacters(pageItems);
+  renderPagination(elPagination, totalPages, "marvel");
+}
+
 function renderMarvelCharacters(characters) {
-  elListMarvel.innerHTML = "";
+  if (characters.length === 0) {
+    renderState(elListMarvel, "empty", "Персонажи не найдены.");
+    return;
+  }
+
   let html = "";
   characters.forEach((character) => {
-    const marvelImg = ` ${character.thumbnail.path}.${character.thumbnail.extension}`;
-    const marvelName = `${character.name}`;
-    if (
-      character.thumbnail.path ===
-      `http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available`
-    ) {
-      return character;
-    }
     html += `
     <button class="marvel__card-btn" data-marvel-modal-open="#marvel-modal" data-character-id="${character.id}">
     <div class="marvel__card">
       <div class="marvel__card-img">
-        <img src="${marvelImg}" alt="${marvelName}" />
+        <img src="${character.images.md}" alt="${character.name}" loading="lazy" />
       </div>
       <div class="marvel__card-content">
-        <h2 class="marvel-name">${marvelName}</h2>
+        <h2 class="marvel-name">${character.name}</h2>
       </div>
     </div>
   </button>
@@ -44,47 +71,45 @@ function renderMarvelCharacters(characters) {
   elListMarvel.innerHTML = html;
 }
 
-async function searchMarvelCharacters(quary) {
+function searchMarvelCharacters(quary) {
+  elPagination.classList.remove("d-none");
   if (quary === "") {
+    filteredMarvelCharacters = allMarvelCharacters;
+  } else {
+    const q = quary.toLowerCase();
+    filteredMarvelCharacters = allMarvelCharacters.filter((character) =>
+      character.name.toLowerCase().includes(q)
+    );
+  }
+  renderMarvelPage(1);
+}
+
+function getCharacter(characterId) {
+  const character = allMarvelCharacters.find(
+    (c) => String(c.id) === String(characterId)
+  );
+  if (!character) {
+    renderState(elMarvelModalContent, "error", "Персонаж не найден.");
     return;
   }
-  const res = await fetch(`${url}&nameStartsWith=${quary}`);
-  const searchResult = await res.json();
-
-  renderMarvelCharacters(searchResult.data.results);
+  fillMarvelModal(character);
 }
 
-function renderPagination(totalPages) {
-  elPagination.innerHTML = "";
-  let html = "";
+function fillMarvelModal(character) {
+  const statsHtml = Object.entries(character.powerstats)
+    .map(([key, value]) => {
+      const num = Number(value) || 0;
+      return `
+      <div class="marvel__stat-row">
+        <span class="marvel__stat-label">${key}</span>
+        <div class="marvel__stat-bar"><span style="width:${num}%"></span></div>
+        <span class="marvel__stat-value">${num}</span>
+      </div>
+      `;
+    })
+    .join("");
 
-  for (let i = 1; i <= totalPages; i++) {
-    html += `
-    <li class="page-item"><a class="page-link" data-marvel-page="${i}" href="?page=${i}">${i}</a></li>
-    `;
-  }
-
-  elPagination.innerHTML = html;
-}
-
-async function getCharacter(characterId) {
-  let res = await fetch(`${url}&id=${characterId}`);
-  let data = await res.json();
-  const character = data;
-  const elModalSpiner = document.querySelector("[data-spiner]");
-
-  fillMarvelModal(character.data.results, elModalSpiner);
-}
-
-function fillMarvelModal(character, elModalSpiner) {
-  elModalSpiner.classList.remove("d-none");
-  elMarvelModalContent.innerHTML = "";
-  let html = "";
-  character.forEach((infCharacter) => {
-    const characterName = `${infCharacter.name}`;
-    const characterDescription = `${infCharacter.description}`;
-    const characterImg = `${infCharacter.thumbnail.path}.${infCharacter.thumbnail.extension}`;
-    html += `
+  elMarvelModalContent.innerHTML = `
     <div class="marvel__modal-btn-wrapper">
     <button
           type="button"
@@ -92,28 +117,24 @@ function fillMarvelModal(character, elModalSpiner) {
           class="btn btn-close"
         ></button>
     </div>
-    
+
 <div class="marvel__open-modal">
   <div>
-    <img style="
-    object-fit: cover;
-" src="${characterImg}" alt="${characterName}">
+    <img style="object-fit: cover;" src="${character.images.lg}" alt="${character.name}">
   </div>
   <div class="marvel__open-modal-content">
-    <h2 class="marvel__modal-name"><b> ${characterName}</h2>
-    <p class="marvel__modal-description"><b>Description:</b> ${characterDescription}</p>
-    <a href="/marvel-character.html?marvelId=${infCharacter.id}">Show More</a>
-    <div>
+    <h2 class="marvel__modal-name"><b>${character.name}</b></h2>
+    <p class="marvel__modal-description"><b>Occupation:</b> ${character.work.occupation || "—"}</p>
+    <p class="marvel__modal-description"><b>Affiliation:</b> ${character.connections.groupAffiliation || "—"}</p>
+    <div class="marvel__stats">${statsHtml}</div>
+    <a href="./marvel-character.html?marvelId=${character.id}">Show More</a>
+  </div>
+</div>
     `;
-  });
-
-  elMarvelModalContent.innerHTML = html;
-  elModalSpiner.classList.add("d-none");
 }
 
 elForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  elPagination.classList.add("d-none");
   const formdata = new FormData(elForm);
   const name = formdata.get("name");
   searchMarvelCharacters(name);
@@ -132,20 +153,20 @@ function onPageClick(evt) {
   if (!el) return;
 
   evt.preventDefault();
-  getMarvelCharacters(el.dataset.marvelPage);
+  renderMarvelPage(Number(el.dataset.marvelPage));
 }
 
-async function onMarvelModalOpen(evt) {
+function onMarvelModalOpen(evt) {
   const el = evt.target.closest("[data-marvel-modal-open]");
 
   if (!el) return;
 
   let characterId = el.dataset.characterId;
 
-  await getCharacter(characterId);
-
   let modalSelector = el.dataset.marvelModalOpen;
   document.querySelector(modalSelector).classList.add("show");
+
+  getCharacter(characterId);
 }
 
 function onMarvelModalClose(evt) {

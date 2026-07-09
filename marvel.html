@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Marvel</title>
+    <title>Marvel Characters — Character API</title>
+    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
     <link rel="stylesheet" href="./css/main.css" />
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,12 +16,13 @@
     />
   </head>
   <body class="marvel__body">
+    <div id="site-header"></div>
     <header class="marvel__header">
       <div class="container">
         <div class="marvel__header">
           <div class="marvel__header-logo">
             <h1>
-              <a href="#">
+              <a href="./marvel.html">
                 <img src="./img/marvel-mini-logo.png" alt="logo" />
               </a>
               <bold> <b>Marvel</b><b>Characters</b> </bold>
@@ -35,17 +37,6 @@
             />
             <button class="marvel__seach-btn" type="submit">Search</button>
           </form>
-          <div class="marvel__header-nav">
-            <nav>
-              <ul>
-                <li>Home</li>
-                <li>character</li>
-                <li>Comics</li>
-                <li>Serial</li>
-                <li>ASFAS</li>
-              </ul>
-            </nav>
-          </div>
         </div>
       </div>
     </header>
@@ -65,7 +56,6 @@
       </nav>
     </div>
     <div data-marval-modal class="marvel__modal" id="marvel-modal">
-      <img src="./img/spinner.svg" data-spiner class="d-none" alt="spinner" />
       <div
         data-marvel-modal-content
         class="marvel__modal-content my-modal-content"
@@ -73,5 +63,6 @@
     </div>
     <script src="./js/main.js"></script>
     <script src="./js/marvel.js"></script>
+    <script src="./js/nav.js"></script>
   </body>
 </html>
